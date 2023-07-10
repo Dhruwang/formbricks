@@ -81,6 +81,9 @@
     "db:seed": {
       "outputs": []
     },
+    "go": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true
