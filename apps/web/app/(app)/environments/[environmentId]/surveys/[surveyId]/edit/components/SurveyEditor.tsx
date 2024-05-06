@@ -127,6 +127,7 @@ export default function SurveyEditor({
 
   return (
     <>
+      {console.log(localSurvey.welcomeCard)}
       <div className="flex h-full flex-col">
         <SurveyMenuBar
           setLocalSurvey={setLocalSurvey}
