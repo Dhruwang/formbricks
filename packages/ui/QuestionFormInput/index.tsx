@@ -1,10 +1,9 @@
 "use client";
 
-import { PencilIcon } from "lucide-react";
+import { PencilIcon, TrashIcon } from "lucide-react";
 import { ImagePlusIcon } from "lucide-react";
 import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-
 import { extractLanguageCodes, getEnabledLanguages, getLocalizedValue } from "@formbricks/lib/i18n/utils";
 import { structuredClone } from "@formbricks/lib/pollyfills/structuredClone";
 import { useSyncScroll } from "@formbricks/lib/utils/hooks/useSyncScroll";
@@ -26,8 +25,7 @@ import {
   TSurveyQuestion,
   TSurveyRecallItem,
 } from "@formbricks/types/surveys";
-
-import { LanguageIndicator } from "../../ee/multiLanguage/components/LanguageIndicator";
+import { LanguageIndicator } from "../../ee/multi-language/components/language-indicator";
 import { createI18nString } from "../../lib/i18n/utils";
 import { FileInput } from "../FileInput";
 import { Input } from "../Input";
@@ -39,7 +37,6 @@ import {
   getCardText,
   getChoiceLabel,
   getIndex,
-  getLabelById,
   getMatrixLabel,
   getPlaceHolderById,
   isValueIncomplete,
@@ -57,7 +54,7 @@ interface QuestionFormInputProps {
   isInvalid: boolean;
   selectedLanguageCode: string;
   setSelectedLanguageCode: (languageCode: string) => void;
-  label?: string;
+  label: string;
   maxLength?: number;
   placeholder?: string;
   ref?: RefObject<HTMLInputElement>;
@@ -206,7 +203,7 @@ export const QuestionFormInput = ({
           }
           parts.push(
             <span
-              className="z-30 flex cursor-pointer items-center justify-center whitespace-pre rounded-md bg-slate-100 text-sm text-transparent"
+              className="z-30 flex h-fit cursor-pointer justify-center whitespace-pre rounded-md bg-slate-100 text-sm text-transparent"
               key={parts.length}>
               {"@" + label}
             </span>
@@ -394,7 +391,7 @@ export const QuestionFormInput = ({
     <div className="w-full">
       <div className="w-full">
         <div className="mb-2 mt-3">
-          <Label htmlFor={id}>{label || getLabelById(id)}</Label>
+          <Label htmlFor={id}>{label}</Label>
         </div>
 
         <div className="flex flex-col gap-4 bg-white">
@@ -447,7 +444,7 @@ export const QuestionFormInput = ({
                 placeholder={placeholder ? placeholder : getPlaceHolderById(id)}
                 id={id}
                 name={id}
-                aria-label={label || getLabelById(id)}
+                aria-label={label}
                 autoComplete={showRecallItemSelect ? "off" : "on"}
                 value={
                   recallToHeadline(text, localSurvey, false, selectedLanguageCode, attributeClasses)[
@@ -502,6 +499,16 @@ export const QuestionFormInput = ({
                 aria-label="Toggle image uploader"
                 className="ml-2 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
                 onClick={() => setShowImageUploader((prev) => !prev)}
+              />
+            )}
+            {id === "subheader" && question && question.subheader !== undefined && (
+              <TrashIcon
+                className="ml-2 h-4 w-4 cursor-pointer text-slate-400 hover:text-slate-500"
+                onClick={() => {
+                  if (updateQuestion) {
+                    updateQuestion(questionIdx, { subheader: undefined });
+                  }
+                }}
               />
             )}
           </div>

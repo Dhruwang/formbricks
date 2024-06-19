@@ -1,6 +1,5 @@
 import { surveys, users } from "@/playwright/utils/mock";
 import { expect, test } from "@playwright/test";
-
 import { createSurvey, finishOnboarding, signUpAndLogin } from "./utils/helper";
 
 test.describe("Survey Create & Submit Response", async () => {
@@ -280,8 +279,8 @@ test.describe("Multi Language Survey Create", async () => {
     // Fill welcome card in german
     await page.locator(".editor-input").click();
     await page.locator(".editor-input").fill(surveys.germanCreate.welcomeCard.description);
-    await page.getByLabel("Headline").click();
-    await page.getByLabel("Headline").fill(surveys.germanCreate.welcomeCard.headline);
+    await page.getByLabel("Note*").click();
+    await page.getByLabel("Note*").fill(surveys.germanCreate.welcomeCard.headline);
 
     // Fill Open text question in german
     await page.getByRole("main").getByText("Free text").click();
@@ -419,8 +418,8 @@ test.describe("Multi Language Survey Create", async () => {
       .getByPlaceholder("Your description here. Recall")
       .fill(surveys.germanCreate.thankYouCard.description);
 
-    // await page.getByPlaceholder("Create your own Survey").click();
-    // await page.getByPlaceholder("Create your own Survey").fill(surveys.germanCreate.thankYouCard.buttonLabel);
+    await page.getByPlaceholder("Create your own Survey").click();
+    await page.getByPlaceholder("Create your own Survey").fill(surveys.germanCreate.thankYouCard.buttonLabel);
 
     // TODO: @pandeymangg - figure out if this is required
     await page.getByRole("button", { name: "Settings", exact: true }).click();

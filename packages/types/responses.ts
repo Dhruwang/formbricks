@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import { ZAttributes } from "./attributes";
 import { ZId } from "./environment";
 import { ZSurvey, ZSurveyLogicCondition } from "./surveys";
@@ -292,6 +291,9 @@ export const ZResponseWithSurvey = ZResponse.extend({
 
 export type TResponseWithSurvey = z.infer<typeof ZResponseWithSurvey>;
 
+export const ZResponseHiddenFieldValue = z.record(z.union([z.string(), z.number(), z.array(z.string())]));
+export type TResponseHiddenFieldValue = z.infer<typeof ZResponseHiddenFieldValue>;
+
 export const ZResponseUpdate = z.object({
   finished: z.boolean(),
   data: ZResponseData,
@@ -304,6 +306,7 @@ export const ZResponseUpdate = z.object({
       action: z.string().optional(),
     })
     .optional(),
+  hiddenFields: ZResponseHiddenFieldValue.optional(),
 });
 
 export type TResponseUpdate = z.infer<typeof ZResponseUpdate>;
