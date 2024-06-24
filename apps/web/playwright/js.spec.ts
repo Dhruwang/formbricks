@@ -9,14 +9,10 @@ test.describe("JS Package Test", async () => {
 
   test("Admin creates an In-App Survey", async ({ page }) => {
     await signUpAndLogin(page, name, email, password);
-    await finishOnboarding(page);
+    await finishOnboarding(page, "app");
 
-    await page
-      .getByText("Product ExperienceProduct Market Fit (Superhuman)Measure PMF by assessing how")
-      .isVisible();
-    await page
-      .getByText("Product ExperienceProduct Market Fit (Superhuman)Measure PMF by assessing how")
-      .click();
+    await page.getByRole("heading", { name: "Product Market Fit (Superhuman)" }).isVisible();
+    await page.getByRole("heading", { name: "Product Market Fit (Superhuman)" }).click();
 
     await page.getByRole("button", { name: "Use this template" }).isVisible();
     await page.getByRole("button", { name: "Use this template" }).click();
@@ -26,13 +22,17 @@ test.describe("JS Package Test", async () => {
     await expect(page.locator("#howToSendCardTrigger")).toBeVisible();
     await page.locator("#howToSendCardTrigger").click();
 
-    await expect(page.locator("#howToSendCardOption-website")).toBeVisible();
-    await page.locator("#howToSendCardOption-website").click();
-    await page.locator("#howToSendCardOption-website").click();
+    await expect(page.locator("#howToSendCardOption-app")).toBeVisible();
+    await page.locator("#howToSendCardOption-app").click();
 
-    await page.locator("#whenToSendCardTrigger").click();
     await page.getByRole("button", { name: "Add action" }).click();
     await page.getByText("New SessionGets fired when a").click();
+
+    await page.locator("#recontactOptionsCardTrigger").click();
+
+    await page.locator("label").filter({ hasText: "Keep showing while conditions" }).click();
+    await page.locator("#recontactDays").check();
+
     await page.getByRole("button", { name: "Publish" }).click();
 
     environmentId =
@@ -57,7 +57,7 @@ test.describe("JS Package Test", async () => {
     await page.goto(htmlFile);
 
     // Formbricks In App Sync has happened
-    const syncApi = await page.waitForResponse((response) => response.url().includes("/website/sync"));
+    const syncApi = await page.waitForResponse((response) => response.url().includes("/app/sync"));
     expect(syncApi.status()).toBe(200);
 
     // Formbricks Modal exists in the DOM
@@ -84,7 +84,7 @@ test.describe("JS Package Test", async () => {
     await page.goto(htmlFile);
 
     // Formbricks In App Sync has happened
-    const syncApi = await page.waitForResponse((response) => response.url().includes("/website/sync"));
+    const syncApi = await page.waitForResponse((response) => response.url().includes("/app/sync"));
     expect(syncApi.status()).toBe(200);
 
     // Formbricks Modal exists in the DOM
