@@ -182,10 +182,10 @@ if (process.env.WEBAPP_URL) {
 }
 
 // Allow all origins for next/image
-nextConfig.images.remotePatterns.push({
-  protocol: "https",
-  hostname: "**",
-});
+// nextConfig.images.remotePatterns.push({
+//   protocol: "https",
+//   hostname: "**",
+// });
 
 const sentryOptions = {
   // For all available options, see:
