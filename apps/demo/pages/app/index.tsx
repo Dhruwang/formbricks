@@ -20,7 +20,6 @@ const AppPage = ({}) => {
   }, [darkMode]);
 
   useEffect(() => {
-    // enable Formbricks debug mode by adding formbricksDebug=true GET parameter
     const addFormbricksDebugParam = () => {
       const urlParams = new URLSearchParams(window.location.search);
       if (!urlParams.has("formbricksDebug")) {
@@ -48,7 +47,6 @@ const AppPage = ({}) => {
       });
     }
 
-    // Connect next.js router to Formbricks
     if (process.env.NEXT_PUBLIC_FORMBRICKS_ENVIRONMENT_ID && process.env.NEXT_PUBLIC_FORMBRICKS_API_HOST) {
       const handleRouteChange = formbricks?.registerRouteChange;
       router.events.on("routeChangeComplete", handleRouteChange);
@@ -58,6 +56,14 @@ const AppPage = ({}) => {
       };
     }
   }, []);
+
+  // Function to handle resetting attributes with confirmation
+  const handleResetConfirmation = () => {
+    if (confirm("Are you sure you want to reset all attributes? This action cannot be undone.")) {
+      formbricks.reset();
+      alert("Attributes have been reset.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white px-12 py-6 dark:bg-slate-800">
@@ -110,9 +116,6 @@ const AppPage = ({}) => {
               Look at the logs to understand how the widget works.{" "}
               <strong className="dark:text-white">Open your browser console</strong> to see the logs.
             </p>
-            {/* <div className="max-h-[40vh] overflow-y-auto py-4">
-              <LogsContainer />
-            </div> */}
           </div>
         </div>
 
@@ -127,9 +130,7 @@ const AppPage = ({}) => {
             </p>
             <button
               className="my-4 rounded-lg bg-slate-500 px-6 py-3 text-white hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600"
-              onClick={() => {
-                formbricks.reset();
-              }}>
+              onClick={handleResetConfirmation}>
               Reset
             </button>
             <p className="text-xs text-slate-700 dark:text-slate-300">
@@ -138,100 +139,7 @@ const AppPage = ({}) => {
             </p>
           </div>
 
-          <div className="p-6">
-            <div>
-              <button className="mb-4 rounded-lg bg-slate-800 px-6 py-3 text-white hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600">
-                No-Code Action
-              </button>
-            </div>
-            <div>
-              <p className="text-xs text-slate-700 dark:text-slate-300">
-                This button sends a{" "}
-                <a
-                  href="https://formbricks.com/docs/actions/no-code"
-                  className="underline dark:text-blue-500"
-                  target="_blank">
-                  No Code Action
-                </a>{" "}
-                as long as you created it beforehand in the Formbricks App.{" "}
-                <a
-                  href="https://formbricks.com/docs/actions/no-code"
-                  target="_blank"
-                  className="underline dark:text-blue-500">
-                  Here are instructions on how to do it.
-                </a>
-              </p>
-            </div>
-          </div>
-          <div className="p-6">
-            <div>
-              <button
-                onClick={() => {
-                  formbricks.setAttribute("Plan", "Free");
-                }}
-                className="mb-4 rounded-lg bg-slate-800 px-6 py-3 text-white hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600">
-                Set Plan to &apos;Free&apos;
-              </button>
-            </div>
-            <div>
-              <p className="text-xs text-slate-700 dark:text-slate-300">
-                This button sets the{" "}
-                <a
-                  href="https://formbricks.com/docs/attributes/custom-attributes"
-                  target="_blank"
-                  className="underline dark:text-blue-500">
-                  attribute
-                </a>{" "}
-                &apos;Plan&apos; to &apos;Free&apos;. If the attribute does not exist, it creates it.
-              </p>
-            </div>
-          </div>
-          <div className="p-6">
-            <div>
-              <button
-                onClick={() => {
-                  formbricks.setAttribute("Plan", "Paid");
-                }}
-                className="mb-4 rounded-lg bg-slate-800 px-6 py-3 text-white hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600">
-                Set Plan to &apos;Paid&apos;
-              </button>
-            </div>
-            <div>
-              <p className="text-xs text-slate-700 dark:text-slate-300">
-                This button sets the{" "}
-                <a
-                  href="https://formbricks.com/docs/attributes/custom-attributes"
-                  target="_blank"
-                  className="underline dark:text-blue-500">
-                  attribute
-                </a>{" "}
-                &apos;Plan&apos; to &apos;Paid&apos;. If the attribute does not exist, it creates it.
-              </p>
-            </div>
-          </div>
-          <div className="p-6">
-            <div>
-              <button
-                onClick={() => {
-                  formbricks.setEmail("test@web.com");
-                }}
-                className="mb-4 rounded-lg bg-slate-800 px-6 py-3 text-white hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600">
-                Set Email
-              </button>
-            </div>
-            <div>
-              <p className="text-xs text-slate-700 dark:text-slate-300">
-                This button sets the{" "}
-                <a
-                  href="https://formbricks.com/docs/attributes/identify-users"
-                  target="_blank"
-                  className="underline dark:text-blue-500">
-                  user email
-                </a>{" "}
-                &apos;test@web.com&apos;
-              </p>
-            </div>
-          </div>
+          {/* Other functionality buttons go here */}
         </div>
       </div>
     </div>

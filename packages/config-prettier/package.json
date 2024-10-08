@@ -10,5 +10,8 @@
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6"
+  },
+  "dependencies": {
+    "@formbricks/config-prettier": "file:"
   }
 }
