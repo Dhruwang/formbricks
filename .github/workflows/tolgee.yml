@@ -32,10 +32,21 @@ jobs:
               SOURCE_BRANCH=${SOURCE_BRANCH#remotes/origin/}
               SOURCE_BRANCH=${SOURCE_BRANCH%~*}
             fi
+            
+            # Remove username prefix if present (format: username/branch-name)
+            if [[ "$SOURCE_BRANCH" == *"/"* ]]; then
+              SOURCE_BRANCH=${SOURCE_BRANCH#*/}
+            fi
+            
             echo "SOURCE_BRANCH=$SOURCE_BRANCH" >> $GITHUB_ENV
           else
             echo "No merge commit found, using current branch"
-            echo "SOURCE_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+            CURRENT_BRANCH=${GITHUB_REF##*/}
+            # Remove username prefix if present
+            if [[ "$CURRENT_BRANCH" == *"/"* ]]; then
+              CURRENT_BRANCH=${CURRENT_BRANCH#*/}
+            fi
+            echo "SOURCE_BRANCH=$CURRENT_BRANCH" >> $GITHUB_ENV
           fi
 
           # Log the branch name for debugging
